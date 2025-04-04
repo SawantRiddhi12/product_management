@@ -2,21 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CheckoutController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\CartController;
-
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index']);
-    Route::post('/', [ProductController::class, 'store']);
-});
-
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index']);
-    Route::post('/', [CartController::class, 'store']);
-});
+Route::apiResource('products', ProductController::class);
+Route::apiResource('cart', CartController::class);
+Route::post('/cart/checkout', [CheckoutController::class, 'checkout']);
